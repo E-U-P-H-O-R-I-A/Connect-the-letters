@@ -30,110 +30,62 @@ namespace CodeBase.CompositionRoot
     {
         public override void InstallBindings()
         {
-            BindGameBootstraperFactory();
-
-            BindCoroutineRunner();
-
-            BindSceneLoader();
-
-            BindInfrastructureUI();
-
-            BindGameStateMachine();
-
-            BindStaticDataService();
-
             BindFactory();
 
-            BindRandomizeService();
-
-            BindPlayerProgressService();
-
-            BindSaveLoadService();
-
-            BindAdsService();
-
-            BindInputService();
-
-            BindAnalyticsService();
-
-            BindServerConnectionService();
-
-            BindLocalizationService();
-
-            BindLogService();
-
-            BindAssetProvider();
-
-            BindWalletService();
+            BindServices();
+            
+            BindComponents();
 
             BindPublicModels();
-
-            BindModelsProviders();
+            
+            BindGameStateMachine();
         }
 
-        private void BindModelsProviders()
+        private void BindComponents()
         {
-            Container.BindInterfacesAndSelfTo<PublicModelProvider>().AsSingle();
+            Container
+                .Bind<ICoroutineRunner>()
+                .To<CoroutineRunner>()
+                .FromComponentInNewPrefabResource(InfrastructureAssetPath.CoroutineRunnerPath)
+                .AsSingle();
         }
+
+        private void BindGameStateMachine() => 
+            GameStateMachineInstaller.Install(Container);
 
         private void BindPublicModels()
         {
             Container.Bind<IPublicModel>().To<LevelPublicModel>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<PublicModelProvider>().AsSingle();
         }
 
-        private void BindWalletService() => 
-            Container.BindInterfacesAndSelfTo<WalletService>().AsSingle();
-
-        private void BindAssetProvider() => 
-            Container.BindInterfacesTo<AssetProvider>().AsSingle();
-
-        private void BindLogService() => 
+        private void BindServices()
+        {
             Container.BindInterfacesTo<LogService>().AsSingle();
-
-        private void BindLocalizationService() => 
-            Container.BindInterfacesTo<LocalizationService>().AsSingle();
-
-        private void BindServerConnectionService() => 
-            Container.BindInterfacesTo<ServerConnectionService>().AsSingle();
-
-        private void BindAnalyticsService() => 
+            Container.BindInterfacesTo<AssetProvider>().AsSingle();
             Container.BindInterfacesTo<AnalyticsService>().AsSingle();
-
-        private void BindStaticDataService() => 
+            Container.BindInterfacesTo<LocalizationService>().AsSingle();
+            Container.BindInterfacesTo<ServerConnectionService>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<AdsService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SceneLoader>().AsSingle();
+            Container.BindInterfacesAndSelfTo<InputService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WalletService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SaveLoadService>().AsSingle();
             Container.BindInterfacesAndSelfTo<StaticDataService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RandomizerService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LoadingCurtainProxy>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AwaitingOverlayProxy>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PersistentProgressService>().AsSingle();
+        }
 
-        private void BindGameBootstraperFactory()
+        private void BindFactory()
         {
             Container
                 .BindFactory<GameBootstrapper, GameBootstrapper.Factory>()
                 .FromComponentInNewPrefabResource(InfrastructureAssetPath.GameBootstraper);
-        }
-
-        private void BindInputService() => 
-            Container.BindInterfacesAndSelfTo<InputService>().AsSingle();
-
-        private void BindAdsService() => 
-            Container.BindInterfacesAndSelfTo<AdsService>().AsSingle();
-
-        private void BindSaveLoadService()
-        {
-            Container
-                .BindInterfacesAndSelfTo<SaveLoadService>()
-                .AsSingle();
-        }
-
-        private void BindPlayerProgressService()
-        {
-            Container
-                .BindInterfacesAndSelfTo<PersistentProgressService>()
-                .AsSingle();
-        }
-
-        private void BindRandomizeService() => 
-            Container.BindInterfacesAndSelfTo<RandomizerService>().AsSingle();
-
-        private void BindFactory()
-        {
+            
             Container
                 .Bind<IGameFactory>()
                 .FromSubContainerResolve()
@@ -149,45 +101,13 @@ namespace CodeBase.CompositionRoot
             Container
                 .BindInterfacesAndSelfTo<CrosswordFactory>()
                 .AsSingle();
-        }
-
-        private void BindCoroutineRunner()
-        {
-            Container
-                .Bind<ICoroutineRunner>()
-                .To<CoroutineRunner>()
-                .FromComponentInNewPrefabResource(InfrastructureAssetPath.CoroutineRunnerPath)
-                .AsSingle();
-        }
-
-        private void BindSceneLoader() => 
-            Container.BindInterfacesAndSelfTo<SceneLoader>().AsSingle();
-
-        private void BindInfrastructureUI()
-        {
-            BindLoadingCurtains();
-
-            BindAwaitingOverlay();
-        }
-
-        private void BindAwaitingOverlay()
-        {
+            
             Container
                 .BindFactory<string, UniTask<AwaitingOverlay>, AwaitingOverlay.Factory>()
                 .FromFactory<PrefabFactoryAsync<AwaitingOverlay>>();
-
-            Container.BindInterfacesAndSelfTo<AwaitingOverlayProxy>().AsSingle();
-        }
-
-        private void BindLoadingCurtains()
-        {
+            
             Container.BindFactory<string, UniTask<LoadingCurtain>, LoadingCurtain.Factory>()
                 .FromFactory<PrefabFactoryAsync<LoadingCurtain>>();
-
-            Container.BindInterfacesAndSelfTo<LoadingCurtainProxy>().AsSingle();
         }
-
-        private void BindGameStateMachine() => 
-            GameStateMachineInstaller.Install(Container);
     }
 }
