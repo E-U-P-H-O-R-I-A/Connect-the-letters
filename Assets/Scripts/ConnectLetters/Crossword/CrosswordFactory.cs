@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace CodeBase.ConnectLetters
 {
-    public class CrosswordFabric
+    public class CrosswordFactory : ICrosswordFactory
     {
         private const char Empty = '_';
-        private const int SizeMatrix = 10;
+        private const int SizeMatrix = 50;
 
         private List<Vector2Int> _coordinatesLetter;
         private Variants[,] _tableVariants;
@@ -151,7 +151,8 @@ namespace CodeBase.ConnectLetters
                     positions.Add(position, coefficient);
                 }
                 
-                return positions.OrderBy(position => position.Value).First().Key;
+                if (positions.Count != 0)
+                    return positions.OrderBy(position => position.Value).First().Key;
             }
             
             return new PositionWord(new Vector2Int(0, 0), Orientation.Horizontal);

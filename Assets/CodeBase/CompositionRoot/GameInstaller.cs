@@ -13,6 +13,7 @@ using CodeBase.Services.InputService;
 using CodeBase.Services.LocalizationService;
 using CodeBase.Services.LogService;
 using CodeBase.Services.PlayerProgressService;
+using CodeBase.Services.PublicModelProvider;
 using CodeBase.Services.RandomizerService;
 using CodeBase.Services.SaveLoadService;
 using CodeBase.Services.ServerConnectionService;
@@ -66,6 +67,13 @@ namespace CodeBase.CompositionRoot
             BindWalletService();
 
             BindPublicModels();
+
+            BindModelsProviders();
+        }
+
+        private void BindModelsProviders()
+        {
+            Container.BindInterfacesAndSelfTo<PublicModelProvider>().AsSingle();
         }
 
         private void BindPublicModels()
