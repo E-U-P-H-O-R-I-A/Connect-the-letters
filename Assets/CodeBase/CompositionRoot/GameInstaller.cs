@@ -1,9 +1,12 @@
+using CodeBase.ConnectLetters;
 using CodeBase.Infrastructure;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factories;
 using CodeBase.Infrastructure.SceneManagement;
 using CodeBase.Infrastructure.States;
 using CodeBase.Infrastructure.UI.LoadingCurtain;
+using CodeBase.Model;
+using CodeBase.Model.Public;
 using CodeBase.Services.AdsService;
 using CodeBase.Services.AnalyticsService;
 using CodeBase.Services.InputService;
@@ -38,7 +41,7 @@ namespace CodeBase.CompositionRoot
 
             BindStaticDataService();
 
-            BindGameFactory();
+            BindFactory();
 
             BindRandomizeService();
 
@@ -61,6 +64,13 @@ namespace CodeBase.CompositionRoot
             BindAssetProvider();
 
             BindWalletService();
+
+            BindPublicModels();
+        }
+
+        private void BindPublicModels()
+        {
+            Container.Bind<IPublicModel>().To<LevelPublicModel>().AsSingle();
         }
 
         private void BindWalletService() => 
@@ -114,21 +124,22 @@ namespace CodeBase.CompositionRoot
         private void BindRandomizeService() => 
             Container.BindInterfacesAndSelfTo<RandomizerService>().AsSingle();
 
-        private void BindGameFactory()
+        private void BindFactory()
         {
             Container
                 .Bind<IGameFactory>()
                 .FromSubContainerResolve()
                 .ByInstaller<GameFactoryInstaller>()
                 .AsSingle();
-        }
-
-        private void BindUIFactory()
-        {
+            
             Container
                 .Bind<IUIFactory>()
                 .FromSubContainerResolve()
                 .ByInstaller<UIFactoryInstaller>()
+                .AsSingle();
+            
+            Container
+                .BindInterfacesAndSelfTo<CrosswordFactory>()
                 .AsSingle();
         }
 

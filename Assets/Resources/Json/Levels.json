@@ -1,0 +1,19 @@
+{
+  "Levels": [
+    {
+      "LevelNumber": 1,
+      "Letters": ["A", "B", "C", "D"],
+      "Words": ["ACID", "CAD", "BAD", "CAB", "DAB"]
+    },
+    {
+      "LevelNumber": 2,
+      "Letters": ["F", "G", "H", "I", "R", "T"],
+      "Words": ["FIGHT", "GIRTH", "GRIT", "RIFT", "FRIGHT", "RIGHT", "THRIFT"]
+    },
+    {
+      "LevelNumber": 3,
+      "Letters": ["L", "M", "N", "O", "P", "R", "S", "T"],
+      "Words": ["STORM", "IMPORT", "MORALS", "PRISON", "NORMAL", "TRAMPLE", "PATROL", "SPORT"]
+    }
+  ]
+}
