@@ -43,7 +43,7 @@ namespace CodeBase.GameLoading.States
             await UniTask.WaitForSeconds(1f); // just for demonstrate concept with overlay. You can remove it. 
             awaitingOverlay.Hide();
             
-            sceneStateMachine.Enter<PrivatePolicyState>().Forget();
+            sceneStateMachine.Enter<FinishGameLoadingState>().Forget();
         }
 
         private void NotifyProgressReaderServices(PlayerProgress progress)

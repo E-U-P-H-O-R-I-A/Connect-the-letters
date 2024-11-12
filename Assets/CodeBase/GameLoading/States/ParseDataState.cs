@@ -35,7 +35,7 @@ namespace CodeBase.GameLoading.States
             
             _awaitingOverlay.Hide();
 
-            _sceneStateMachine.Enter<FinishGameLoadingState>();
+            _sceneStateMachine.Enter<LoadPlayerProgressState>();
         }
           
         public UniTask Exit() => default;

@@ -23,9 +23,9 @@ namespace CodeBase.GameLoading
         {
             log.Log("Start loading scene bootstraping");
 
-            //sceneStateMachine.RegisterState(statesFactory.Create<ServerConnectState>());
+            sceneStateMachine.RegisterState(statesFactory.Create<ServerConnectState>());
             sceneStateMachine.RegisterState(statesFactory.Create<ParseDataState>());
-            //sceneStateMachine.RegisterState(statesFactory.Create<LoadPlayerProgressState>());
+            sceneStateMachine.RegisterState(statesFactory.Create<LoadPlayerProgressState>());
             // sceneStateMachine.RegisterState(statesFactory.Create<PrivatePolicyState>());
             // sceneStateMachine.RegisterState(statesFactory.Create<GDPRState>());
             sceneStateMachine.RegisterState(statesFactory.Create<FinishGameLoadingState>());

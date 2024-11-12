@@ -38,7 +38,7 @@ namespace CodeBase.GameLoading.States
             awaitingOverlay.Hide();
             
             if(result == ConnectionResult.Success)
-                sceneStateMachine.Enter<LoadPlayerProgressState>().Forget();
+                sceneStateMachine.Enter<ParseDataState>().Forget();
             else
             {
                 // some works on connection error for example repeat
