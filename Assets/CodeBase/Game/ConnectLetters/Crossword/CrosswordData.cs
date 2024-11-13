@@ -2,9 +2,14 @@ using System.Collections.Generic;
 
 namespace CodeBase.ConnectLetters
 {
-    public struct CrosswordData
+    public class CrosswordData
     {
         public Dictionary<string, PositionWord> Words;
         public char[,] Matrix;
+
+        public CrosswordData()
+        {
+            Words = new Dictionary<string, PositionWord>();
+        }
     }
 }
