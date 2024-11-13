@@ -12,14 +12,15 @@ namespace CodeBase.ConnectLetters
 
         private List<Vector2Int> _coordinatesLetter;
         private Variants[,] _tableVariants;
+        private CrosswordData _result;
         private char[,] _tableWords;
-        
+
         private int _minX;
         private int _maxX;
         private int _minY;
         private int _maxY;
 
-        public char[,] CreateCrossword(string[] array)
+        public CrosswordData CreateCrossword(string[] array)
         {
             InitializeField();
 
@@ -35,7 +36,9 @@ namespace CodeBase.ConnectLetters
                     Console.WriteLine($"Can't find place for word: {word}");
             }
 
-            return GenerateResultMatrix();
+            _result.Matrix = GenerateResultMatrix();
+
+            return _result;
         }
 
         private string[] Sort(string[] array) => 
@@ -53,6 +56,7 @@ namespace CodeBase.ConnectLetters
         private void InitializeField()
         {
             _coordinatesLetter = new List<Vector2Int>();
+            _result = new CrosswordData();
 
             _tableVariants = new Variants[SizeMatrix, SizeMatrix];
             _tableWords = new char[SizeMatrix, SizeMatrix];
@@ -78,6 +82,8 @@ namespace CodeBase.ConnectLetters
         {
             SetWordToMatrix(foundedPlace, word);
             CloseNextAndPrevCell(foundedPlace, word);
+            
+            _result.Words.Add(word, foundedPlace);
 
             for (int index = 0; index < word.Length; index++)
             {
@@ -142,7 +148,7 @@ namespace CodeBase.ConnectLetters
                 _minY = centerX;
                 _maxY = centerX;
 
-                return new PositionWord(new Vector2Int(centerX, centerY), Orientation.Horizontal);
+                return new PositionWord(new Vector2Int(centerX, centerY), Orientation.Horizontal, word.Length);
             }
             
             Dictionary<PositionWord, int> positions = new();
@@ -180,7 +186,7 @@ namespace CodeBase.ConnectLetters
                     return positions.OrderBy(position => position.Value).First().Key;
             }
             
-            return new PositionWord(new Vector2Int(0, 0), Orientation.Horizontal);
+            return new PositionWord(new Vector2Int(0, 0), Orientation.Horizontal, word.Length);
         }
         
         private void CloseCell(Vector2Int cell)

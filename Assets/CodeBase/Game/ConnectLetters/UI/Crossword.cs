@@ -23,10 +23,10 @@ public class Crossword : MonoBehaviour
 
     public void Start()
     {
-        char[,] crossword = _crosswordFactory.CreateCrossword(Words);
+        CrosswordData crosswordData = _crosswordFactory.CreateCrossword(Words);
 
-        InitializeSizeGrid(crossword);
-        initializeCells(crossword);
+        InitializeSizeGrid(crosswordData.Matrix);
+        initializeCells(crosswordData.Matrix);
     }
 
     private void CreateEmptyCell() =>

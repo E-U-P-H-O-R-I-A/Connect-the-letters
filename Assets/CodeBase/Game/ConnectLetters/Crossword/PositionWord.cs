@@ -5,11 +5,14 @@ namespace CodeBase.ConnectLetters
 {
     public struct PositionWord : IEquatable<PositionWord>
     {
+        public int Length;
         public Vector2Int Position;
         public Orientation Orientation;
+ 
 
-        public PositionWord(Vector2Int position, Orientation orientation)
+        public PositionWord(Vector2Int position, Orientation orientation, int length)
         {
+            Length = length;
             Position = position;
             Orientation = orientation;
         }

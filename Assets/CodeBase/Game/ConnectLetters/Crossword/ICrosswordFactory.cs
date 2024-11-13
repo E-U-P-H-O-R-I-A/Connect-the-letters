@@ -2,6 +2,6 @@ namespace CodeBase.ConnectLetters
 {
     public interface ICrosswordFactory
     {
-        public char[,] CreateCrossword(string[] array);
+        public CrosswordData CreateCrossword(string[] array);
     }
 }
