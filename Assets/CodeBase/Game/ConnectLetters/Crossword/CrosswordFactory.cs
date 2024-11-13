@@ -8,7 +8,7 @@ namespace CodeBase.ConnectLetters
     public class CrosswordFactory : ICrosswordFactory
     {
         private const char Empty = '_';
-        private const int SizeMatrix = 50;
+        private const int SizeMatrix = 100;
 
         private List<Vector2Int> _coordinatesLetter;
         private Variants[,] _tableVariants;
@@ -49,9 +49,6 @@ namespace CodeBase.ConnectLetters
         
         private bool CheckIsCellClose(Vector2Int coordinate) => 
             _tableVariants[coordinate.x, coordinate.y] == Variants.Close;
-        
-        private bool CheckIsCellOrientated(Vector2Int coordinate) => 
-            _tableVariants[coordinate.x, coordinate.y] == Variants.Horizontal || _tableVariants[coordinate.x, coordinate.y] == Variants.Vertical;
 
         private void InitializeField()
         {
@@ -88,23 +85,51 @@ namespace CodeBase.ConnectLetters
                 {
                     Vector2Int selectedCell = new(foundedPlace.Position.x , foundedPlace.Position.y + index);
                 
-                  //  CheckUpCell(new Vector2Int(selectedCell.x, selectedCell.y));
-                  //  CheckDownCell(new Vector2Int(selectedCell.x, selectedCell.y));
+                    CheckUpCell(new Vector2Int(selectedCell.x, selectedCell.y));
+                    CheckDownCell(new Vector2Int(selectedCell.x, selectedCell.y));
                     CheckHorizontalCell(new Vector2Int(selectedCell.x, selectedCell.y));
                 }
                 else
                 {
                     Vector2Int selectedCell = new(foundedPlace.Position.x + index, foundedPlace.Position.y);
 
-                    //CheckLeftCell(new Vector2Int(selectedCell.x, selectedCell.y));
-                   // CheckRightCell(new Vector2Int(selectedCell.x, selectedCell.y));
+                    CheckLeftCell(new Vector2Int(selectedCell.x, selectedCell.y));
+                    CheckRightCell(new Vector2Int(selectedCell.x, selectedCell.y));
                     CheckVerticalCell(new Vector2Int(selectedCell.x, selectedCell.y));
                 }
             }
 
+            UpdateCoordinatesLetters();
             UpdateSizeMatrix(foundedPlace, word);
         }
-        
+
+        private void UpdateCoordinatesLetters()
+        {
+            List<Vector2Int> cellsToClose = new();
+            
+            _coordinatesLetter.ForEach(coordinate =>
+            {
+                if (_tableVariants[coordinate.x, coordinate.y] == Variants.Horizontal)
+                {
+                    Vector2Int left = new(coordinate.x, coordinate.y - 1);
+                    Vector2Int rigth = new(coordinate.x, coordinate.y + 1);
+                    
+                    if (CheckIsCellClose(left) && CheckIsCellClose(rigth))
+                        cellsToClose.Add(coordinate);
+                }
+                else
+                {
+                    Vector2Int up = new(coordinate.x + 1, coordinate.y);
+                    Vector2Int down = new(coordinate.x - 1, coordinate.y);
+                    
+                    if (CheckIsCellClose(up) && CheckIsCellClose(down))
+                        cellsToClose.Add(coordinate);
+                }
+            });
+            
+            cellsToClose.ForEach(CloseCell);
+        }
+
         private PositionWord FindPlace(string word)
         {
             if (_coordinatesLetter.Count == 0)
@@ -157,100 +182,68 @@ namespace CodeBase.ConnectLetters
             
             return new PositionWord(new Vector2Int(0, 0), Orientation.Horizontal);
         }
+        
+        private void CloseCell(Vector2Int cell)
+        {
+            _tableVariants[cell.x, cell.y] = Variants.Close;
+            _coordinatesLetter.Remove(new Vector2Int(cell.x, cell.y));
+        }
 
         private void CheckUpCell(Vector2Int selectedPosition)
         {
             Vector2Int upCell = new(selectedPosition.x + 1, selectedPosition.y);
             
-            if (_tableVariants[upCell.x, upCell.y] == Variants.Close) 
-                return;
             
-            Vector2Int upLeftCell = new(upCell.x, upCell.y - 1);
-            Vector2Int upRightCell = new(upCell.x, upCell.y + 1);
-
-
-            if (CheckIsCellClose(upLeftCell) && CheckIsCellClose(upRightCell))
-            {
+            if (CalculateLettersAroundCell(upCell) > 1) 
                 CloseCell(upCell);
-                return;
-            }
-            
-            if (!CheckIsCellOrientated(upLeftCell) && !CheckIsCellOrientated(upRightCell) ) 
-                return;
-            
-            CloseCell(upCell);
-        }
-
-        private void CloseCell(Vector2Int upCell)
-        {
-            _tableVariants[upCell.x, upCell.y] = Variants.Close;
-            _coordinatesLetter.Remove(new Vector2Int(upCell.x, upCell.y));
         }
 
         private void CheckDownCell(Vector2Int selectedPosition)
         {
             Vector2Int downCell = new(selectedPosition.x - 1, selectedPosition.y);
             
-            if (_tableVariants[downCell.x, downCell.y] == Variants.Close) 
-                return;
-            
-            Vector2Int downLeftCell = new(downCell.x, downCell.y - 1);
-            Vector2Int downRightCell = new(downCell.x, downCell.y + 1);
-
-            if (CheckIsCellClose(downLeftCell) && CheckIsCellClose(downRightCell))
-            {
+            if (CalculateLettersAroundCell(downCell) > 1) 
                 CloseCell(downCell);
-                return;
-            }
-            
-            if (!CheckIsCellOrientated(downLeftCell) && !CheckIsCellOrientated(downRightCell))
-                return;
-
-            CloseCell(downCell);
         }
 
         private void CheckLeftCell(Vector2Int selectedPosition)
         {
             Vector2Int leftCell = new(selectedPosition.x, selectedPosition.y - 1);
             
-            if (_tableVariants[leftCell.x, leftCell.y] == Variants.Close) 
-                return;
-            
-            Vector2Int leftUpCell = new(leftCell.x + 1, leftCell.y);
-            Vector2Int leftDownCell = new(leftCell.x - 1, leftCell.y);
-
-            if (CheckIsCellClose(leftUpCell) && CheckIsCellClose(leftUpCell))
-            {
+            if (CalculateLettersAroundCell(leftCell) > 1) 
                 CloseCell(leftCell);
-                return;
-            }
-            
-            if (!CheckIsCellOrientated(leftUpCell) && !CheckIsCellOrientated(leftDownCell)) 
-                return;
-
-            CloseCell(leftCell);
         }
 
         private void CheckRightCell(Vector2Int selectedPosition)
         {
             Vector2Int rightCell = new(selectedPosition.x , selectedPosition.y + 1);
             
-            if (_tableVariants[rightCell.x, rightCell.y] == Variants.Close)
-                return;
-            
-            Vector2Int rightUpCell = new(rightCell.x + 1, rightCell.y);
-            Vector2Int rightDownCell = new(rightCell.x - 1, rightCell.y);
-
-            if (CheckIsCellClose(rightUpCell) && CheckIsCellClose(rightDownCell))
-            {
+            if (CalculateLettersAroundCell(rightCell) > 1) 
                 CloseCell(rightCell);
-                return;
-            }
+        }
+        
+        private int CalculateLettersAroundCell(Vector2Int coordinate)
+        {
+            int result = 0;
             
-            if (!CheckIsCellOrientated(rightUpCell) && !CheckIsCellOrientated(rightDownCell))
-                return;
+            Vector2Int up = new(coordinate.x + 1, coordinate.y); 
+            Vector2Int down = new(coordinate.x - 1, coordinate.y); 
+            Vector2Int left = new(coordinate.x, coordinate.y - 1); 
+            Vector2Int right = new(coordinate.x, coordinate.y + 1);
 
-            CloseCell(rightCell);
+            if (!CheckIsCellEmpty(up))
+                result++;
+
+            if (!CheckIsCellEmpty(down))
+                result++;
+
+            if (!CheckIsCellEmpty(left))
+                result++;
+
+            if (!CheckIsCellEmpty(right))
+                result++;
+
+            return result;
         }
 
         private void CheckHorizontalCell(Vector2Int selectedPosition)
@@ -337,8 +330,6 @@ namespace CodeBase.ConnectLetters
                 
                 switch (_tableVariants[selectedCoordinate.x, selectedCoordinate.y])
                 {
-                    case Variants.Free:
-                        return true;
                     case Variants.Close:
                         return false;
                     case Variants.Vertical:
