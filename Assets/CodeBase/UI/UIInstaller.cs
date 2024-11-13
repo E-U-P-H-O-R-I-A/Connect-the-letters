@@ -12,7 +12,6 @@ namespace CodeBase.UI
             UIFactoryInstaller.Install(Container);
 
             Container.BindInterfacesAndSelfTo<WindowService>().AsSingle();
-
             Container.BindInterfacesAndSelfTo<PopUpService>().AsSingle();
         }
     }

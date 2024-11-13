@@ -9,35 +9,34 @@ namespace CodeBase.Infrastructure.States
 {
     public class GameHubState : IState
     {
-        private readonly ILoadingCurtain loadingCurtain;
-        private readonly ISceneLoader sceneLoader;
-        private readonly ILogService log;
-        private readonly IAssetProvider assetProvider;
+        private readonly ILoadingCurtain _loadingCurtain;
+        private readonly IAssetProvider _assetProvider;
+        private readonly ISceneLoader _sceneLoader;
+        private readonly ILogService _log;
 
         public GameHubState(ILoadingCurtain loadingCurtain, ISceneLoader sceneLoader, ILogService log, IAssetProvider assetProvider)
         {
-            this.loadingCurtain = loadingCurtain;
-            this.sceneLoader = sceneLoader;
-            this.log = log;
-            this.assetProvider = assetProvider;
+            _loadingCurtain = loadingCurtain;
+            _assetProvider = assetProvider;
+            _sceneLoader = sceneLoader;
+            _log = log;
         }
 
         public async UniTask Enter()
         {
-            log.Log("GameHub state exter");
-            loadingCurtain.Show();
+            _log.Log("GameHub state exter");
+            _loadingCurtain.Show();
 
-            await assetProvider.WarmupAssetsByLabel(AssetLabels.GameHubState);
-            // due to we don't have any substates for this state jet we just load scene with game hub decorations
-            await sceneLoader.Load(InfrastructureAssetPath.GameHubScene);
+            await _assetProvider.WarmupAssetsByLabel(AssetLabels.GameHubState);
+            await _sceneLoader.Load(InfrastructureAssetPath.GameHubScene);
             
-            loadingCurtain.Hide();
+            _loadingCurtain.Hide();
         }
 
         public async UniTask Exit()
         {
-            loadingCurtain.Show();
-            await assetProvider.ReleaseAssetsByLabel(AssetLabels.GameHubState);
+            _loadingCurtain.Show();
+            await _assetProvider.ReleaseAssetsByLabel(AssetLabels.GameHubState);
         }
     }
 }
