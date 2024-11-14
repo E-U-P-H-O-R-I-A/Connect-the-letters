@@ -5,6 +5,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace ConnectLetters.UI
@@ -19,25 +20,19 @@ namespace ConnectLetters.UI
         [Space, Header("Setting")]
         [Space(5)]
         [SerializeField, Range(0, 360f)] private float angelRotate = 360f;
-        [SerializeField] private float speedRotate = 0.8f;
+        [SerializeField] private float valueScale = 1.2f;
+        [SerializeField] private float durationAnimation = 0.8f;
 
-        public void Awake()
-        {
-            Initialize('a');
-        }
-
-        public void Initialize(char letter)
-        {
+        public void Initialize(char letter) => 
             InitializeText(letter);
-            InitializeButton();
-        }
 
         public void Show()
         {
             ReleaseButton();
             
-            transform.DORotate(angelRotate * Vector3.up, speedRotate, RotateMode.FastBeyond360).SetEase(Ease.OutQuad);
-            text.DOColor(Color.white, speedRotate).SetEase(Ease.OutQuad);
+            transform.DORotate(angelRotate * Vector3.up, durationAnimation, RotateMode.FastBeyond360).SetEase(Ease.OutQuad);
+            transform.DOScale(valueScale * Vector3.one, durationAnimation).SetEase(Ease.OutQuad).SetLoops(2, LoopType.Yoyo);
+            text.DOColor(Color.white, durationAnimation).SetEase(Ease.OutQuad);
         }
 
         private void ReleaseButton() => 

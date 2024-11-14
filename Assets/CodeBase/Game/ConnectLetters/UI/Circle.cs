@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ConnectLetters.Input;
 using TMPro;
@@ -15,7 +16,10 @@ namespace ConnectLetters.UI
         [SerializeField] private CircleLetter prefab;
         
         [Space, Header("Settings")]
+        
         [SerializeField] private float offset;
+
+        public event Action<string> OnCheck;
 
         public void Initialize(List<string> letter)
         {
@@ -26,8 +30,11 @@ namespace ConnectLetters.UI
         private float FindRadiusCircle() => 
             rectTransform.rect.width / 2;
 
-        private void RejectString() => 
+        private void RejectString()
+        {
+            OnCheck?.Invoke(textSelectedLetters.text);
             textSelectedLetters.text = string.Empty;
+        }
 
         private void SelectLetter(string letter) => 
             textSelectedLetters.text += letter;

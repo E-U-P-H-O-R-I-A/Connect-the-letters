@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using CodeBase.ConnectLetters;
+using CodeBase.Services.LogService;
 using ConnectLetters.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,17 +19,46 @@ public class Crossword : MonoBehaviour
     [SerializeField] private GameObject emptyPrefab;
 
     private ICrosswordFactory _crosswordFactory;
+    private ILogService _logService;
+    
+    private CellCrossword[,] _crosswordsCells;
+    private CrosswordData _crosswordData;
 
     [Inject]
-    public void Construct(ICrosswordFactory crosswordFactory) =>
+    public void Construct(ICrosswordFactory crosswordFactory, ILogService logService)
+    {
         _crosswordFactory = crosswordFactory;
+        _logService = logService;
+    }
 
     public void Initialize(List<string> words)
     {
-        CrosswordData crosswordData = _crosswordFactory.CreateCrossword(words.ToArray());
+        _crosswordData = _crosswordFactory.CreateCrossword(words.ToArray());
 
-        InitializeSizeGrid(crosswordData.Matrix);
-        initializeCells(crosswordData.Matrix);
+        InitializeSizeGrid(_crosswordData.Matrix);
+        initializeCells(_crosswordData.Matrix);
+    }
+
+    public void OpenWord(string keyWord)
+    {
+        if (!_crosswordData.Words.ContainsKey(keyWord.ToUpper()))
+        {
+            _logService.LogError($"Not Find Word: {keyWord}");
+            return;
+        }
+
+        PositionWord positionWord = _crosswordData.Words.FirstOrDefault(word => word.Key.ToUpper() == keyWord).Value;
+
+        if (positionWord.Orientation == Orientation.Horizontal)
+        {
+            for (int index = positionWord.Position.y; index < positionWord.Position.y + positionWord.Length; index++)
+                _crosswordsCells[positionWord.Position.x, index].Show();
+        }
+        else
+        {
+            for (int index = positionWord.Position.x; index < positionWord.Position.x + positionWord.Length; index++)
+                _crosswordsCells[index, positionWord.Position.y].Show();
+        }
     }
 
     private void CreateEmptyCell() =>
@@ -55,6 +86,8 @@ public class Crossword : MonoBehaviour
     {
         int rows = matrix.GetLength(0);
         int columns = matrix.GetLength(1);
+        
+        _crosswordsCells = new CellCrossword[rows, columns];
 
         for (int indexY = 0; indexY < rows; indexY++)
         {
@@ -68,6 +101,8 @@ public class Crossword : MonoBehaviour
                 {
                     CellCrossword cell = CreateCell();
                     cell.Initialize(matrix[indexY, indexX]);
+                    
+                    _crosswordsCells[indexY, indexX] = cell;
                 }
             }
         }

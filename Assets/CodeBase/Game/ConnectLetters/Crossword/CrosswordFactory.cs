@@ -185,6 +185,8 @@ namespace CodeBase.ConnectLetters
                 foreach (var index in indices)
                 {
                     PositionWord position = CalculatePosition(_coordinatesLetter[coordinate], index);
+                    position.Length = word.Length;
+                    
                     int coefficient = CalculateCoefficient(position, word);
                     
                     if (!CanSetWord(position, word))

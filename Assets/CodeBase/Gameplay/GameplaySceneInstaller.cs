@@ -1,3 +1,4 @@
+using CodeBase.Game.ConnectLetters.Controllers;
 using CodeBase.Infrastructure.States;
 using CodeBase.Services.PrefabPoolingService;
 using CodeBase.UI;
@@ -25,7 +26,8 @@ namespace CodeBase.Gameplay
             Container.BindInterfacesAndSelfTo<StatesFactory>().AsSingle();
 
             Container.Bind<SceneStateMachine>().AsSingle();
-            
+            Container.Bind<ProgressController>().AsSingle();
+
             UIInstaller.Install(Container);
 
             Container.BindInterfacesAndSelfTo<PrefabPoolingService>().AsSingle();
