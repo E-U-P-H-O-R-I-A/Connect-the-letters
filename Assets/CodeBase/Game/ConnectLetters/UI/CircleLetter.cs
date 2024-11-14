@@ -1,3 +1,4 @@
+using System;
 using ConnectLetters.Input;
 using DG.Tweening;
 using TMPro;
@@ -15,25 +16,42 @@ namespace ConnectLetters.UI
 
         [Space, Header("Settings")] 
         [SerializeField] private float speedAnimation = 0.8f;
-
-        private string _char;
+        
+        public event Action<string> OnSelect;
+        
+        private bool _isSelected;
+        
 
         public void Initialize(InputUISpeaker inputUISpeaker, string letter)
         {
-            _char = letter;
-            text.text = _char;
-
+            InitializationLetter(letter);
             InitializationInputListener(inputUISpeaker);
         }
 
-        private  void Select() => 
+        private  void Select()
+        {
+            if (_isSelected)
+                return;
+            
+            _isSelected = true;
+            OnSelect?.Invoke(text.text);
             ChangeColorBackground(Color.white);
+        }
 
-        private void Reject() => 
+        private void Reject()
+        {
+            if (!_isSelected)
+                return;
+            
+            _isSelected = false;
             ChangeColorBackground(Color.clear);
+        }
 
         private void ChangeColorBackground(Color color) => 
             background.DOColor(color, speedAnimation);
+
+        private void InitializationLetter(string letter) => 
+            text.text = letter;
 
         private void InitializationInputListener(InputUISpeaker inputUISpeaker)
         {
