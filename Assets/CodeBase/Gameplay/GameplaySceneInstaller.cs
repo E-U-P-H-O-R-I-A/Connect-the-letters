@@ -1,6 +1,7 @@
 using CodeBase.Infrastructure.States;
 using CodeBase.Services.PrefabPoolingService;
 using CodeBase.UI;
+using ConnectLetters.UI;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,9 @@ namespace CodeBase.Gameplay
 {
     public class GameplaySceneInstaller : MonoInstaller
     {
+        [SerializeField] private Crossword _crossword;
+        [SerializeField] private Circle _circle;
+        
         // Here we bind dependencies that make sense only in gameplay scene.
         // If we need some dependencies from scene for our game mode
         // we can link it on scene right here for binding and use it in scene context
@@ -25,6 +29,14 @@ namespace CodeBase.Gameplay
             UIInstaller.Install(Container);
 
             Container.BindInterfacesAndSelfTo<PrefabPoolingService>().AsSingle();
+
+            BindComponents();
+        }
+
+        private void BindComponents()
+        {
+            Container.BindInstance(_circle);
+            Container.BindInstance(_crossword);
         }
     }
 }

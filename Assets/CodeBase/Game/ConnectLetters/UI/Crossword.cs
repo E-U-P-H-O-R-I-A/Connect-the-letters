@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CodeBase.ConnectLetters;
 using ConnectLetters.UI;
 using UnityEngine;
@@ -15,15 +16,14 @@ public class Crossword : MonoBehaviour
     [SerializeField] private GameObject emptyPrefab;
 
     private ICrosswordFactory _crosswordFactory;
-    private string[] Words = { "КАРТА", "КАПОТ", "ТРОПА", "ПАРА", "ЛАК", "ПАРК", "ТАРА", "ЛАПА" };
 
     [Inject]
     public void Construct(ICrosswordFactory crosswordFactory) =>
         _crosswordFactory = crosswordFactory;
 
-    public void Start()
+    public void Initialize(List<string> words)
     {
-        CrosswordData crosswordData = _crosswordFactory.CreateCrossword(Words);
+        CrosswordData crosswordData = _crosswordFactory.CreateCrossword(words.ToArray());
 
         InitializeSizeGrid(crosswordData.Matrix);
         initializeCells(crosswordData.Matrix);

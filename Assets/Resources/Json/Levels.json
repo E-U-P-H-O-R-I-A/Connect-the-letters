@@ -3,7 +3,7 @@
     {
       "Id": 1,
       "Letters": ["A", "B", "C", "D"],
-      "Words": ["ACID", "CAD", "BAD", "CAB", "DAB"]
+      "Words": ["ACID", "CAD", "BAD", "CAB"]
     },
     {
       "Id": 2,

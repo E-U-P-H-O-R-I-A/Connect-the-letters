@@ -312,6 +312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2352dd6ed343ce9e1fc29d6eeb5a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _crossword: {fileID: 2059411918}
+  _circle: {fileID: 1983845162}
 --- !u!1 &1268072296
 GameObject:
   m_ObjectHideFlags: 0
