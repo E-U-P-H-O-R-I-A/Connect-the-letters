@@ -1,6 +1,7 @@
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.UI.PopUps.ErrorPopup;
 using CodeBase.UI.PopUps.PolicyAcceptPopup;
+using CodeBase.UI.Windows.WinGameWindow;
 using Cysharp.Threading.Tasks;
 using Zenject;
 
@@ -21,6 +22,10 @@ namespace CodeBase.UI.Services.Factories
             Container
                 .BindFactory<string, UniTask<ErrorPopup>, ErrorPopup.Factory>()
                 .FromFactory<PrefabFactoryAsync<ErrorPopup>>();
+            
+            Container
+                .BindFactory<string, UniTask<WinGameWindow>, WinGameWindow.Factory>()
+                .FromFactory<PrefabFactoryAsync<WinGameWindow>>();
         }
     }
 }

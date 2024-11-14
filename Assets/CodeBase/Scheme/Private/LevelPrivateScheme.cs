@@ -9,7 +9,7 @@ namespace CodeBase.Scheme.Private
     [Serializable]
     public class LevelsPrivateScheme : IPrivateScheme
     {
-        public List<LevelPrivateScheme> Levels;
+        public List<LevelPrivateScheme> Levels = new List<LevelPrivateScheme>();
         
         public LevelPrivateScheme GetLevel(int id)
         {

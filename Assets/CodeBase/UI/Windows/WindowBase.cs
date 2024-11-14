@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace CodeBase.UI.Windows
@@ -20,7 +21,10 @@ namespace CodeBase.UI.Windows
             Cleanup();
 
         protected virtual void OnAwake() => 
-            CloseButton?.onClick.AddListener(()=> Destroy(gameObject));
+            CloseButton?.onClick.AddListener(Close);
+
+        public void Close() => 
+            Destroy(gameObject);
 
         protected virtual void Initialize(){}
         protected virtual void SubscribeUpdates(){}

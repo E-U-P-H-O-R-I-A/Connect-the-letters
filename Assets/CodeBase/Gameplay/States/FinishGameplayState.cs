@@ -10,13 +10,12 @@ namespace CodeBase.Gameplay.States
         public FinishGameplayState(GameStateMachine gameStateMachine) => 
             this.gameStateMachine = gameStateMachine;
 
-        public async UniTask Exit()
-        {
-            gameStateMachine.Enter<GameHubState>().Forget();
-        }
+        public UniTask Exit() => 
+            default;
 
         public UniTask Enter()
         {
+            gameStateMachine.Enter<GameHubState>().Forget();
             return default;
         }
     }

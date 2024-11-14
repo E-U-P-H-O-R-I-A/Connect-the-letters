@@ -1,5 +1,6 @@
 ﻿using CodeBase.UI.PopUps.ErrorPopup;
 using CodeBase.UI.PopUps.PolicyAcceptPopup;
+using CodeBase.UI.Windows.WinGameWindow;
 using Cysharp.Threading.Tasks;
 
 namespace CodeBase.UI.Services.Factories
@@ -9,6 +10,7 @@ namespace CodeBase.UI.Services.Factories
         
         void Cleanup();
         UniTask<PolicyAcceptPopup> CreatePolicyAskingPopup();
+        UniTask<WinGameWindow> CreateWinGameWindow();
         UniTask<ErrorPopup> CreateErrorPopup();
     }
 }

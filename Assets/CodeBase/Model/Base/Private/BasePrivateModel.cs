@@ -4,15 +4,18 @@ using UnityEngine;
 
 namespace CodeBase.Model.Private
 {
-    public abstract class BasePrivateModel<T> : IPrivateModel  where T : IPrivateScheme
+    public abstract class BasePrivateModel<T> : IPrivateModel  where T : IPrivateScheme, new()
     {
         public abstract string Key { get; }
-        private T Data { get; set; }
+        public T Data { get; set; }
         
         public void SaveProgress() => 
             PlayerPrefs.GetString(Key, Data.ToJson());
 
-        public void LoadProgress() => 
-            Data = PlayerPrefs.GetString(Key).ToDeserialized<T>();
+        public void LoadProgress()
+        {
+            string savedData = PlayerPrefs.GetString(Key, null);
+            Data = savedData != null && savedData != string.Empty ? savedData.ToDeserialized<T>() : new T();
+        }
     }
 }
