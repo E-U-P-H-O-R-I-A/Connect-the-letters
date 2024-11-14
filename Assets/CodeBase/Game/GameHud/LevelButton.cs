@@ -1,5 +1,7 @@
 using CodeBase.Infrastructure.States;
+using CodeBase.Model.Private;
 using CodeBase.Model.Public;
+using CodeBase.Services.PublicModelProvider;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,17 +14,23 @@ namespace ConnectLetters.GameHud
         [SerializeField] private TextMeshProUGUI text;
         [SerializeField] private Button button;
 
+        private LevelPrivateModel _levelPrivateModel;
         private GameStateMachine _gameStateMachine;
-        private LevelScheme _scheme;
+
+        private int  _id;
 
         [Inject]
-        void Construct(GameStateMachine gameStateMachine) => 
-            _gameStateMachine = gameStateMachine;
-
-        public void Initialize(LevelScheme scheme)
+        void Construct(GameStateMachine gameStateMachine, PrivateModelProvider privateModelProvider)
         {
-            SaveData(scheme);
-            InitText(scheme.LevelNumber);
+            _levelPrivateModel = privateModelProvider.Get<LevelPrivateModel>();
+            
+            _gameStateMachine = gameStateMachine;
+        }
+
+        public void Initialize(LevelPublicScheme publicScheme)
+        {
+            SaveData(publicScheme.Id);
+            InitText(publicScheme.Id);
         }
         
         private void OnEnable() => 
@@ -31,13 +39,16 @@ namespace ConnectLetters.GameHud
         private void OnDisable() =>
             button.onClick.RemoveListener(OnClick);
 
-        private void SaveData(LevelScheme scheme) => 
-            _scheme = scheme;
+        private void SaveData(int id) => 
+            _id = id;
 
         private void InitText(int schemeLevelNumber) => 
             text.text = schemeLevelNumber.ToString();
 
-        private void OnClick() => 
+        private void OnClick()
+        {
+            _levelPrivateModel.SelectedLevel = _id;
             _gameStateMachine.Enter<GameplayState>();
+        }
     }
 }

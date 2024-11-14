@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CodeBase.Infrastructure.States;
 using CodeBase.Model;
+using CodeBase.Model.Base.Public;
 using CodeBase.Services.LogService;
 using CodeBase.UI.Overlays;
 using Cysharp.Threading.Tasks;

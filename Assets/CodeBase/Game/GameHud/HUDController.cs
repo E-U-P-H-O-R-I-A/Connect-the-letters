@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CodeBase.Model.Public;
 using CodeBase.Services.PublicModelProvider;
@@ -38,9 +37,9 @@ namespace ConnectLetters.GameHud
 
         public void InitializeContent()
         {
-            List<LevelScheme> schemes = _levelModel.Data.Levels;
+            List<LevelPublicScheme> schemes = _levelModel.Data.GetLevels();
             
-            foreach (LevelScheme scheme in schemes)
+            foreach (LevelPublicScheme scheme in schemes)
             {
                 LevelButton button = CreateButton();
                 button.Initialize(scheme);

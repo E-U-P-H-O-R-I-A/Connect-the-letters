@@ -5,20 +5,19 @@ using CodeBase.Infrastructure.Factories;
 using CodeBase.Infrastructure.SceneManagement;
 using CodeBase.Infrastructure.States;
 using CodeBase.Infrastructure.UI.LoadingCurtain;
-using CodeBase.Model;
+using CodeBase.Model.Base.Private;
+using CodeBase.Model.Base.Public;
+using CodeBase.Model.Private;
 using CodeBase.Model.Public;
 using CodeBase.Services.AdsService;
 using CodeBase.Services.AnalyticsService;
 using CodeBase.Services.InputService;
 using CodeBase.Services.LocalizationService;
 using CodeBase.Services.LogService;
-using CodeBase.Services.PlayerProgressService;
 using CodeBase.Services.PublicModelProvider;
 using CodeBase.Services.RandomizerService;
-using CodeBase.Services.SaveLoadService;
 using CodeBase.Services.ServerConnectionService;
 using CodeBase.Services.StaticDataService;
-using CodeBase.Services.WalletService;
 using CodeBase.UI.Overlays;
 using CodeBase.UI.Services.Factories;
 using Cysharp.Threading.Tasks;
@@ -37,6 +36,8 @@ namespace CodeBase.CompositionRoot
             BindComponents();
 
             BindPublicModels();
+
+            BindPrivateModels();
             
             BindGameStateMachine();
         }
@@ -60,6 +61,13 @@ namespace CodeBase.CompositionRoot
             Container.BindInterfacesAndSelfTo<PublicModelProvider>().AsSingle();
         }
 
+        private void BindPrivateModels()
+        {
+            Container.Bind<IPrivateModel>().To<LevelPrivateModel>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<PrivateModelProvider>().AsSingle();
+        }
+
         private void BindServices()
         {
             Container.BindInterfacesTo<LogService>().AsSingle();
@@ -71,13 +79,10 @@ namespace CodeBase.CompositionRoot
             Container.BindInterfacesAndSelfTo<AdsService>().AsSingle();
             Container.BindInterfacesAndSelfTo<SceneLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<InputService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<WalletService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SaveLoadService>().AsSingle();
             Container.BindInterfacesAndSelfTo<StaticDataService>().AsSingle();
             Container.BindInterfacesAndSelfTo<RandomizerService>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadingCurtainProxy>().AsSingle();
             Container.BindInterfacesAndSelfTo<AwaitingOverlayProxy>().AsSingle();
-            Container.BindInterfacesAndSelfTo<PersistentProgressService>().AsSingle();
         }
 
         private void BindFactory()

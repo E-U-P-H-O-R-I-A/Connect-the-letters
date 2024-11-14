@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Model;
+using CodeBase.Model.Base.Public;
 using Zenject;
 
 namespace CodeBase.Services.PublicModelProvider

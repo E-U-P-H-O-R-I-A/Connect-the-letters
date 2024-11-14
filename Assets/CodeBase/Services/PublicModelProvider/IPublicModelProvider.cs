@@ -1,4 +1,5 @@
 using CodeBase.Model;
+using CodeBase.Model.Base.Public;
 
 namespace CodeBase.Services.PublicModelProvider
 {

@@ -1,22 +1,12 @@
-﻿using CodeBase.Data;
-using CodeBase.Services.PlayerProgressService;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace CodeBase.UI.Windows
 {
     public abstract class WindowBase : MonoBehaviour
     {
         [SerializeField] protected Button CloseButton;
-    
-        protected IPersistentProgressService ProgressService;
-        protected PlayerProgress Progress => ProgressService.Progress;
-
-        [Inject]
-        public void Construct(IPersistentProgressService progressService) => 
-            ProgressService = progressService;
-
+        
         private void Awake() => 
             OnAwake();
 
