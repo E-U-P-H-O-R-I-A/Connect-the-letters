@@ -7,12 +7,13 @@ using Zenject;
 
 public class Crossword : MonoBehaviour
 {
-    [Space, Header("Components")] [SerializeField]
-    private RectTransform rectTransform;
-
+    [Space, Header("Components")] 
+    [SerializeField] private RectTransform rectTransform;
     [SerializeField] private GridLayoutGroup gridLayoutGroup;
 
-    [Space] [SerializeField] private CellCrossword cellCrosswordPrefab;
+    [Space] 
+    
+    [SerializeField] private CellCrossword cellCrosswordPrefab;
     [SerializeField] private GameObject emptyPrefab;
 
     private ICrosswordFactory _crosswordFactory;

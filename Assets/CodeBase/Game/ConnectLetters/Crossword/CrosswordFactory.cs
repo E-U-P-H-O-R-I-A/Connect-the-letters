@@ -37,8 +37,22 @@ namespace CodeBase.ConnectLetters
             }
 
             _result.Matrix = GenerateResultMatrix();
+            _result.Words = GenerateResiltCordinates();
 
             return _result;
+        }
+
+        private Dictionary<string, PositionWord> GenerateResiltCordinates()
+        {
+            Dictionary<string, PositionWord> result = new();
+
+            foreach (var word in _result.Words)
+            {
+                Vector2Int newPosition = word.Value.Position - new Vector2Int(_minY, _minX);
+                result.Add(word.Key, new PositionWord(newPosition, word.Value.Orientation, word.Value.Length));
+            }
+
+            return result;
         }
 
         private string[] Sort(string[] array) => 
