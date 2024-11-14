@@ -77,6 +77,12 @@ MonoBehaviour:
     - GameHubState
     - GameplayState
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a20d8ae4823fcf40b05e464ecc662a6
+    m_Address: WinGameWindow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameplayState
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 58f1d24dc6e3bb6498c7dbdc20d2a86e, type: 2}
   m_SchemaSet:
