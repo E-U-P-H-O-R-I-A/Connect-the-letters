@@ -56,7 +56,10 @@ namespace CodeBase.Gameplay.States
         private void LoadNextLevel()
         {
             if (_levelPublicModel.Data.GetLevels().Count == _levelPrivateModel.SelectedLevel)
+            {
                 LoadHud();
+                return;
+            }
 
             _levelPrivateModel.SelectedLevel++;
             _gameStateMachine.Enter<GameplayState>();
