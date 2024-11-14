@@ -2,18 +2,23 @@
   "Levels": [
     {
       "Id": 1,
-      "Letters": ["A", "B", "C", "D"],
-      "Words": ["ACID", "CAD", "BAD", "CAB"]
+      "Letters": ["А", "О", "Л", "З"],
+      "Words": ["ЗОЛА", "ЗАЛ", "ЛОЗА","ЗЛО", "ЛАЗ"]
     },
     {
       "Id": 2,
-      "Letters": ["F", "G", "H", "I", "R", "T"],
-      "Words": ["FIGHT", "GIRTH", "GRIT", "RIFT", "FRIGHT", "RIGHT", "THRIFT"]
+      "Letters": ["С", "О", "М", "У"],
+      "Words": ["СУМО", "СОМ", "МУС","СУМ"]
     },
     {
       "Id": 3,
-      "Letters": ["L", "M", "N", "O", "P", "R", "S", "T"],
-      "Words": ["STORM", "IMPORT", "MORALS", "PRISON", "NORMAL", "TRAMPLE", "PATROL", "SPORT"]
+      "Letters": ["С", "О", "Р", "Т"],
+      "Words": ["ТОР", "РОТ", "СОРТ", "ТРОС", "ТОРС", "СТО"]
+    },
+    {
+      "Id": 4,
+      "Letters": ["Ф", "Ш", "Р", "Е", "И"],
+      "Words": ["ШЕРИФ", "РИФ", "ШЕФ", "ШИФЕР", "ШИФР"]
     }
   ]
 }
