@@ -10,7 +10,7 @@ namespace CodeBase.Model.Private
         public T Data { get; set; }
         
         public void SaveProgress() => 
-            PlayerPrefs.GetString(Key, Data.ToJson());
+            PlayerPrefs.SetString(Key, Data.ToJson());
 
         public void LoadProgress()
         {
